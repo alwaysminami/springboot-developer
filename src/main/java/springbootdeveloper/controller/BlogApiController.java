@@ -3,13 +3,11 @@ package springbootdeveloper.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springbootdeveloper.domain.Article;
 import springbootdeveloper.dto.AddArticleRequest;
 import springbootdeveloper.dto.ArticleResponse;
+import springbootdeveloper.dto.UpdateArticleRequest;
 import springbootdeveloper.service.BlogService;
 
 import java.util.List;
@@ -39,5 +37,33 @@ public class BlogApiController {
 
         return ResponseEntity.ok()
                 .body(articles);
+    }
+
+    @GetMapping("/api/articles/{id}")
+    // URL에서 {id} 에 해당하는 값이 아래 메서드의 id 값으로 들어감
+    // @PathVariable은 URL에서 값을 가져오는 애너테이션
+    // 동작 원리는 예를 들어 /api/articles/3 에서 GET 요청을 받으면 id에 3이 들어오고,
+    // 서비스 클래스의 findById()에서 3번 블로그 글을 검색, 글을 찾으면 정보를 body에 담아 웹 브라우저로 전송
+    public ResponseEntity<ArticleResponse> findArticle(@PathVariable long id) {
+        Article article = blogService.findByID(id);
+
+        return ResponseEntity.ok()
+                .body(new ArticleResponse(article));
+    }
+
+    @DeleteMapping("/api/articles/{id}")
+    public ResponseEntity<Void> deleteArticle(@PathVariable long id) {
+        blogService.delete(id);
+
+        return ResponseEntity.ok()
+                .build();
+    }
+
+    @PutMapping("/api/articles/{id}")
+    public ResponseEntity<Article> updateArticle(@PathVariable long id, @RequestBody UpdateArticleRequest request) {
+        Article updatedArticle = blogService.update(id, request);
+
+        return ResponseEntity.ok()
+                .body(updatedArticle);
     }
 }
