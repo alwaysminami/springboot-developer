@@ -45,7 +45,7 @@ public class BlogApiController {
     // 동작 원리는 예를 들어 /api/articles/3 에서 GET 요청을 받으면 id에 3이 들어오고,
     // 서비스 클래스의 findById()에서 3번 블로그 글을 검색, 글을 찾으면 정보를 body에 담아 웹 브라우저로 전송
     public ResponseEntity<ArticleResponse> findArticle(@PathVariable long id) {
-        Article article = blogService.findByID(id);
+        Article article = blogService.findById(id);
 
         return ResponseEntity.ok()
                 .body(new ArticleResponse(article));
