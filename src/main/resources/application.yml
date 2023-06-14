@@ -19,6 +19,18 @@ spring:
     console:
       enabled: true
 
+  # 구글 OAuth
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 7~
+            client-secret: G~
+            scope:
+              - email
+              - profile
+
 jwt:
   # 이슈 발급자
   issuer: ajufresh@gmail.com

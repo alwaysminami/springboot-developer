@@ -10,6 +10,7 @@ import java.time.Duration;
 @RequiredArgsConstructor
 @Service
 public class TokenService {
+
     private final TokenProvider tokenProvider;
     private final RefreshTokenService refreshTokenService;
     private final UserService userService;

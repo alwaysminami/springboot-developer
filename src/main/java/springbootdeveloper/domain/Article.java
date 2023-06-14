@@ -25,8 +25,13 @@ public class Article {
     @Column(name = "content", nullable = false)
     private String content;
 
+    @Column(name = "author", nullable = false)
+    private String author;
+
     @Builder // 빌더 패턴으로 객체 생성. 롬복에서 지원하는 에너테이션.
-    public Article(String title, String content) {
+    public Article(String author, String title, String content) {
+        // 객체 생성 시 글쓴이(author)을 입력받을 수 있도록 추가
+        this.author = author;
         this.title = title;
         this.content = content;
     }

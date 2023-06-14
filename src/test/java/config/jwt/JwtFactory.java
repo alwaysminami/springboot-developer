@@ -37,7 +37,6 @@ public class JwtFactory {
         return JwtFactory.builder().build();
     }
 
-    // jjwt 라이브러리를 사용해 JWT 토큰 생성
     public String createToken(JwtProperties jwtProperties) {
         return Jwts.builder()
                 .setSubject(subject)

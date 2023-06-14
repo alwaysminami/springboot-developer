@@ -28,31 +28,37 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TokenApiControllerTest {
+class TokenApiControllerTest {
+
     @Autowired
     protected MockMvc mockMvc;
+
     @Autowired
     protected ObjectMapper objectMapper;
+
     @Autowired
-    protected WebApplicationContext context;
+    private WebApplicationContext context;
+
     @Autowired
     JwtProperties jwtProperties;
+
     @Autowired
     UserRepository userRepository;
+
     @Autowired
     RefreshTokenRepository refreshTokenRepository;
 
     @BeforeEach
-    public void mockMvcSetup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+    public void mockMvcSetUp() {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .build();
         userRepository.deleteAll();
     }
 
     @DisplayName("createNewAccessToken: 새로운 액세스 토큰을 발급한다.")
     @Test
     public void createNewAccessToken() throws Exception {
-        // given 테스트 유저를 생성하고, jjwt 라이브러리를 이요하여 리프레시 토큰을 만들어 데이터베이스에 저장
-        // 토큰 생성 API의 요청 본문에 리프레시 토큰을 포함하여 요청 객체를 생성
+        // given
         final String url = "/api/token";
 
         User testUser = userRepository.save(User.builder()
@@ -71,12 +77,12 @@ public class TokenApiControllerTest {
         request.setRefreshToken(refreshToken);
         final String requestBody = objectMapper.writeValueAsString(request);
 
-        // when 토큰 추가 API에 요청을 보내며, 요청 타입은 JSON이고, given절에서 미리 만들어둔 객체를 요청 본문으로 함께 전송
+        // when
         ResultActions resultActions = mockMvc.perform(post(url)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(requestBody));
 
-        // then 응답 코드가 201 Created인지 확ㅇ니하고 응답으로 온 액세스 토큰이 비어있지 않은지 확인
+        // then
         resultActions
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.accessToken").isNotEmpty());
